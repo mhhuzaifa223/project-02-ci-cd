@@ -36,7 +36,10 @@ jobs:
 
       - name: Install Backend Dependencies
         working-directory: backend
-        run: pip install -r requirements.txt          
+        run: pip install -r requirements.txt
+        
+      - name: Map test database hostname
+        run: echo "127.0.0.1 db_test" | sudo tee -a /etc/hosts  
 
       - name: Run backend tests
         working-directory: backend
