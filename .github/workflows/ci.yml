@@ -89,7 +89,7 @@ jobs:
         run: docker build -f backend/Dockerfile -t tabulae-backend:ci backend
       
       - name: Scan Backend Image with Trivy
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: tabulae-backend:ci
           format: table
@@ -101,7 +101,7 @@ jobs:
         run: docker build -f frontend/Dockerfile -t tabulae-frontend:ci frontend
 
       - name: Scan Frontend Image with Trivy
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: tabulae-frontend:ci
           format: table
