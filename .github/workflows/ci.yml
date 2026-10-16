@@ -42,6 +42,7 @@ jobs:
         working-directory: backend
         env:
           PYTHONPATH: .
+          SECRET_KEY: ci-test-secret-key-not-for-production
           DATABASE_URL: postgresql+asyncpg://test_user:test_pass@127.0.0.1:5432/test_db
         run: pytest app/tests -v
 

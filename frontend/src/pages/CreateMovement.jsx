@@ -11,7 +11,7 @@ import { searchWarehouses } from "../api/warehouses";
 import { getAvailableLots } from "../api/stock";
 
 export default function CreateMovement() {
-  const { accessToke} = useAuth();
+  const { accessToken} = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
