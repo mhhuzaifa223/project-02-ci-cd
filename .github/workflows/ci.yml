@@ -87,6 +87,24 @@ jobs:
 
       - name: Build Backend Docker Image
         run: docker build -f backend/Dockerfile -t tabulae-backend:ci backend
+      
+      - name: Scan Backend Image with Trivy
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: tabulae-backend:ci
+          format: table
+          vuln-type: os,library
+          severity: HIGH,CRITICAL
+          exit-code: '0'
 
       - name: Build frontend Docker Image
         run: docker build -f frontend/Dockerfile -t tabulae-frontend:ci frontend
+
+      - name: Scan Frontend Image with Trivy
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: tabulae-frontend:ci
+          format: table
+          vuln-type: os,library
+          severity: HIGH,CRITICAL
+          exit-code: '0'
