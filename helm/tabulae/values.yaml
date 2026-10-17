@@ -1,0 +1,19 @@
+backend:
+  image: tabulae-backend:latest
+  replicas: 1
+  port: 8000
+
+frontend:
+  image: tabulae-frontend:latest
+  replicas: 1
+  port: 80
+
+database:
+  image: postgres:17
+  replicas: 1
+  port: 5432
+  storage: 1Gi
+
+service:
+  type: NodePort
+  frontendNodePort: 30080

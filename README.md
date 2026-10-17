@@ -17,9 +17,13 @@ I also worked through pipeline failures and fixed them until the workflows were 
 - **ESLint** — Detecting frontend code-quality issues
 - **Docker** — Validating Docker image builds
 - **Gitleaks** — Scanning for exposed secrets
+- **Trivy** — Scanning Docker images for vulnerabilities
 - **pip-audit** — Checking Python dependencies for known vulnerabilities
 - **npm audit** — Checking frontend dependencies for known vulnerabilities
 - **Git and GitHub** — Version control and workflow execution
+- **Amazon ECR** — Storing Docker images
+- **Kind and Kubernetes** — Running the application in a local Kubernetes cluster
+- **Helm** — Deploying and managing Kubernetes resources
 
 ## 1. Continuous Integration Pipeline
 
@@ -85,7 +89,15 @@ After these fixes, the CI jobs and security checks completed successfully.
 4. Review the latest workflow runs and their individual jobs.
 5. Confirm that the configured checks have passed.
 
-## 5. What I Learned
+## 5. Kubernetes Deployment with Helm
+
+I also deployed Tabulae to a local Kind Kubernetes cluster using Helm. The chart includes the frontend, backend, PostgreSQL database, and persistent database storage.
+
+I validated the chart with `helm lint`, checked the deployed workloads, and tested a failed Helm upgrade. Using Helm's `--atomic` option, the previous working release was restored successfully.
+
+The GitHub Actions pipeline also publishes the application images to Amazon ECR after the required CI jobs pass. GitHub Actions deployment to Kubernetes is not configured yet; the Helm deployment and rollback test were performed manually in the local cluster.
+
+## 6. What I Learned
 
 Through this project, I gained practical experience with:
 
@@ -101,4 +113,4 @@ This project helped me understand that a working application is only one part of
 
 ## Project Scope
 
-This project focuses on CI, testing, Docker build validation, and automated security checks. It does not include an AWS deployment or an automated production rollback.
+This project covers automated CI and security checks, Docker image builds, publishing images to Amazon ECR, and local Kubernetes deployment using Helm. Rollback was tested manually in Kind. Automated Kubernetes deployment through GitHub Actions and production deployment are not included.
