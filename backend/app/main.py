@@ -59,3 +59,7 @@ app.include_router(websocket.router)
 @app.get("/")
 def read_root():
     return {"message": "API running successfully"}
+
+@app.get("/health", tags=["Health"])
+def health_check():
+    return {"status": "healthy"}

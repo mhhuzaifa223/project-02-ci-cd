@@ -26,6 +26,12 @@ services:
       - ./db_init:/docker-entrypoint-initdb.d # Scripts in this folder are executed on first init (in aphabetical order)
     ports:
       - "5433:5432" # Publish container PostgreSQL on host port 5433 to avoid conflicts with local PostgreSQL
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${TABULAE_DB_USER} -d $${TABULAE_DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     networks:
       - tabulae-network # Shared network for internal service communication
 
@@ -36,9 +42,16 @@ services:
     restart: unless-stopped
     env_file: .env
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
-      - "8000:8000"
+      - "8001:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
     networks:
       - tabulae-network
 
@@ -46,11 +59,12 @@ services:
     build:
       context: ./frontend
       args:
-        VITE_API_URL: http://localhost:8000 # Backend API URL for dev – change to production URL when deploying
+        VITE_API_URL: http://localhost:8001 # Backend API URL for dev – change to production URL when deploying
     container_name: tabulae-frontend
     restart: unless-stopped
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     ports:
       - "8080:80"
     networks:
